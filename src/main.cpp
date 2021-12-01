@@ -11,9 +11,19 @@
 #define PLACE_HOLDER_FACING_SPAHN "%FACING_SPAHN%"
 
 int main() {
+    HWND window = GetForegroundWindow();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    BringWindowToTop(window);                   // Bring window to top
+    SetForegroundWindow(window);                // Then set it as foregroundwindow
+    if (LockSetForegroundWindow(LSFW_LOCK)) {   // and then lock the foreground window
+        std::cerr << "Failed to lock window!\n";
+    }
+
     std::string input_file_name;
     std::cout << "Eingabedatei: ";
     std::getline(std::cin, input_file_name);
+
+    LockSetForegroundWindow(LSFW_UNLOCK);   // Unlock the foreground window
     
     std::string facing_spahn;
     std::cout << "Facing-Spahn(mm): ";
